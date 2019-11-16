@@ -24,7 +24,15 @@ public class NhanVien {
     private String ghiChu;
     private int maCaLamViec;
     private int soNgayLamViec = 0;
+    private CaLamViec caLamViec;
 
+    public CaLamViec getCaLamViec() {
+        return caLamViec;
+    }
+
+    public void setCaLamViec(CaLamViec caLamViec) {
+        this.caLamViec = caLamViec;
+    }
 
     public NhanVien() {
     }
