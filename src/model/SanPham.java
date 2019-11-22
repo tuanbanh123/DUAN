@@ -14,7 +14,6 @@ public class SanPham {
 
     private int maSanPham;
     private String tenSanPham;
-    private int maLoaiSP;
     private Float giaBan;
     private Boolean trangThai;
     private String ghiChu;
@@ -22,13 +21,16 @@ public class SanPham {
     public SanPham() {
     }
 
-    public SanPham(int maSanPham, String tenSanPham, int maLoaiSP, Float giaBan, Boolean trangThai, String ghiChu) {
+    public SanPham(int maSanPham, String tenSanPham, Float giaBan, Boolean trangThai, String ghiChu) {
         this.maSanPham = maSanPham;
         this.tenSanPham = tenSanPham;
-        this.maLoaiSP = maLoaiSP;
         this.giaBan = giaBan;
         this.trangThai = trangThai;
         this.ghiChu = ghiChu;
+    }
+
+    public SanPham(int aInt, String string, int aInt0, float aFloat, boolean aBoolean, String string0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int getMaSanPham() {
@@ -45,14 +47,6 @@ public class SanPham {
 
     public void setTenSanPham(String tenSanPham) {
         this.tenSanPham = tenSanPham;
-    }
-
-    public int getMaLoaiSP() {
-        return maLoaiSP;
-    }
-
-    public void setMaLoaiSP(int maLoaiSP) {
-        this.maLoaiSP = maLoaiSP;
     }
 
     public Float getGiaBan() {
@@ -78,5 +72,7 @@ public class SanPham {
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
     }
+
+   
 
 }

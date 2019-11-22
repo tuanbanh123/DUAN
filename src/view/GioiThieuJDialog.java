@@ -1,20 +1,27 @@
+package view;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+
+
 /**
  *
- * @author NgọcHải
+ * @author Le Ngoc
  */
 public class GioiThieuJDialog extends javax.swing.JDialog {
+
     /**
-     * Creates new form GioiThieuDialog
+     * Creates new form GioiThieuJDialog
      */
-    public GioiThieuJDialog(java.awt.Frame parent) {
-        initComponents();      
+    public GioiThieuJDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -24,46 +31,50 @@ public class GioiThieuJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblHinh = new javax.swing.JLabel();
-        sp = new javax.swing.JScrollPane();
+        lblTitle = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         txtGioiThieu = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setUndecorated(true);
+        setMinimumSize(new java.awt.Dimension(522, 565));
 
-        lblHinh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Actions-help-about-icon.png"))); // NOI18N
+        lblTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo.jpg"))); // NOI18N
+        lblTitle.setPreferredSize(new java.awt.Dimension(512, 505));
+        lblTitle.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                lblTitleAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        getContentPane().add(lblTitle, java.awt.BorderLayout.CENTER);
 
-        txtGioiThieu.setEditable(false);
-        txtGioiThieu.setBackground(new java.awt.Color(240, 240, 240));
-        txtGioiThieu.setText("Yêu cầu hệ thống:\n1. Hệ điều hành bất kỳ\n2.JDK 1.8 trở lên \n2.SQL server 2008 trở lên");
-        sp.setViewportView(txtGioiThieu);
+        txtGioiThieu.setText("\nYêu cầu về môi trường:\n1. Hệ điều hành bất kỳ\n2. JDK 1.8 trở lên\n3. SQL Sever 2008 trở lên");
+        txtGioiThieu.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                txtGioiThieuAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jScrollPane1.setViewportView(txtGioiThieu);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(133, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(lblHinh)
-                        .addGap(134, 134, 134))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(lblHinh, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(sp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
-        );
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtGioiThieuAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_txtGioiThieuAncestorAdded
+       this.dispose();
+    }//GEN-LAST:event_txtGioiThieuAncestorAdded
+
+    private void lblTitleAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_lblTitleAncestorAdded
+      this.dispose();
+    }//GEN-LAST:event_lblTitleAncestorAdded
 
     /**
      * @param args the command line arguments
@@ -76,7 +87,7 @@ public class GioiThieuJDialog extends javax.swing.JDialog {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -96,13 +107,21 @@ public class GioiThieuJDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-          }
+                GioiThieuJDialog dialog = new GioiThieuJDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblHinh;
-    private javax.swing.JScrollPane sp;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTitle;
     private javax.swing.JTextPane txtGioiThieu;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,12 +5,23 @@
  */
 package view;
 
+import DAO.HoaDonChiTietDAO;
+import DAO.HoaDonDAO;
+import DAO.NhanVienDAO;
+import helper.ShareHelper;
+import helper.XDate;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.HoaDon;
 
 /**
  *
  * @author duann
  */
 public class HoaDonChiTietJFrame extends javax.swing.JFrame {
+ static HoaDonDAO dao = new HoaDonDAO();
+    static HoaDonChiTietDAO daoCT = new HoaDonChiTietDAO();
+    static NhanVienDAO nvdao = new NhanVienDAO();
 
     /**
      * Creates new form HoaDonChiTietJFrame
@@ -18,9 +29,35 @@ public class HoaDonChiTietJFrame extends javax.swing.JFrame {
 
     public HoaDonChiTietJFrame() {
         initComponents();
-        
+        init();
+    }
+ void init() {
+        this.setLocationRelativeTo(null);
+        load();
+        setIconImage(ShareHelper.APP_ICON);
+        this.setTitle("Hệ thống quản lý quán coffee");
+        ShareHelper.setBoderForTable(jScrollPane2);
     }
 
+    public static void load() {
+        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+        model.setRowCount(0);
+        try {
+            List<HoaDon> list = dao.getAll();
+            for (HoaDon hoaDon : list) {
+                Object[] row = {                
+                    hoaDon.getMaHoaDon(),
+                    hoaDon.getSanPham().getTenSanPham(),
+                    hoaDon.getHoaDonChiTiet().getSoLuongSP(),
+                    hoaDon.getSanPham().getGiaBan(),
+                    hoaDon.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán",
+                    nvdao.findById(hoaDon.getMaNhanVien()).getHoTen(),
+                    hoaDon.isTrangThai() ? XDate.toString(hoaDon.getNgayThanhToan()) : "",};
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,11 +82,11 @@ public class HoaDonChiTietJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Bàn", "Hóa đơn", "Sản phẩm", "Số lượng mua", "Đơn giá", "Trạng thái", "Nhân viên", "Ngày thanh toán"
+                "Hóa đơn", "Sản phẩm", "Số lượng mua", "Đơn giá", "Trạng thái", "Nhân viên", "Ngày thanh toán"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

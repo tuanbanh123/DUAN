@@ -4,18 +4,79 @@
  * and open the template in the editor.
  */
 package view;
+
+import DAO.NhanVienDAO;
+import helper.DialogHelper;
+import helper.ShareHelper;
+import model.NhanVien;
+
 /**
  *
  * @author NgọcHải
  */
 public class DangNhapJDialog extends javax.swing.JDialog {
+
+    NhanVienDAO dao = new NhanVienDAO();
+
     /**
      * Creates new form DangNhapJDialog
      */
     public DangNhapJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();        
+        initComponents();
+        init();
     }
+
+    void init() {
+        setIconImage(ShareHelper.APP_ICON);
+        setLocationRelativeTo(null);
+    }
+
+    boolean checkLogin() {
+        boolean check = true;
+        if (txtTenDangNhap.getText().isEmpty()) {
+            DialogHelper.alert(this, "Bạn phải nhập email để đăng nhập.");
+            check = false;
+        }
+
+        if (txtMatKhau.getText().isEmpty()) {
+            DialogHelper.alert(this, "Bạn phải nhập mật khẩu để đăng nhập.");
+            check = false;
+        }
+
+        return check;
+    }
+
+    void login() {
+        if (checkLogin()) {
+            String email = txtTenDangNhap.getText();
+            String matKhau = new String(txtMatKhau.getPassword());
+            try {
+                NhanVien model = dao.findByEmail(email);
+                if (model != null) {
+                    String matKhau2 = model.getMatKhau();
+                    if (matKhau.equals(matKhau2)) {
+                        ShareHelper.USER = model;
+                        DialogHelper.alert(this, "Đăng nhập thành công!");
+                        this.dispose();
+                    } else {
+                        DialogHelper.alert(this, "Sai mật khẩu!");
+                    }
+                } else {
+                    DialogHelper.alert(this, "Sai email đăng nhập!");
+                }
+            } catch (Exception e) {
+                DialogHelper.alert(this, "Đăng nhập thất bại, vui lòng kiểm tra lại kết nối.");
+            }
+        }
+    }
+
+    void exit() {
+        if (DialogHelper.confirm(this, "Bạn có muốn thoát khỏi ứng dụng không!")) {
+            System.exit(0);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,12 +172,12 @@ public class DangNhapJDialog extends javax.swing.JDialog {
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         // TODO add your handling code here:
-       
+        login();
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     private void btnKetThucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKetThucActionPerformed
         // TODO add your handling code here:
-        
+        exit();
     }//GEN-LAST:event_btnKetThucActionPerformed
 
     /**

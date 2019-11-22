@@ -5,6 +5,17 @@
  */
 package view;
 
+import helper.DialogHelper;
+import helper.ShareHelper;
+import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.Timer;
+
 /**
  *
  * @author duann
@@ -17,9 +28,94 @@ public class ManiJFrame extends javax.swing.JFrame {
   
     public ManiJFrame() {
         initComponents();
-       
+         setIconImage(ShareHelper.APP_ICON);
+        setLocationRelativeTo(null);
+
+        new Timer(1000, new ActionListener() {
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lbldongHo.setText(format.format(new Date()));
+            }
+        }).start();
+        this.openWelcome();
+        this.openLogin();
+    }
+  void openLogin() {
+        new DangNhapJDialog(this, true).setVisible(true);
     }
 
+    void openWelcome() {
+        new ChaoJDialog(this, true).setVisible(true);
+    }
+    
+    void logoff() {
+        ShareHelper.logoff();
+        this.openLogin();
+    }
+      void exit() {
+        if (DialogHelper.confirm(this, "Bạn thực sự muốn kết thúc?")) {
+            System.exit(0);
+        }
+    }
+      void openNhanVien() {
+        if (ShareHelper.authenticated()) {
+            new NhanVienJFrame(this, rootPaneCheckingEnabled).setVisible(true);
+        } else {
+            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+
+    void openKhoHang() {
+        if (ShareHelper.authenticated()) {
+            new KhoHangJFrame().setVisible(true);
+        } else {
+            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+
+    void openHoaDon() {
+        if (ShareHelper.authenticated()) {
+            new HoaDonChiTietJFrame().setVisible(true);
+        } else {
+            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+
+    void openCaLamViec() {
+        if (ShareHelper.authenticated()) {
+            new CaLamViecJFrame(this, rootPaneCheckingEnabled).setVisible(true);
+        } else {
+            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+     void openSanPham() {
+        if (ShareHelper.authenticated()) {
+            new SanPhamJFrame(this, rootPaneCheckingEnabled).setVisible(true);
+        } else {
+            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+      void openThongKe() {
+        if (ShareHelper.authenticated()) {
+            new ThongKeJFrame(this, rootPaneCheckingEnabled).setVisible(true);
+        } else {
+            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+
+    void openAbout() {
+        new GioiThieuJDialog(this, true).setVisible(true);
+    }
+
+    void openWebsite() {
+        try {
+            Desktop.getDesktop().browse(new File("help/index.html").toURI());
+        } catch (IOException ex) {
+            DialogHelper.alert(this, "Không tìm thấy file hướng dẫn!");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,6 +126,9 @@ public class ManiJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        lbldongHo = new javax.swing.JLabel();
         mnu = new javax.swing.JMenuBar();
         mnuHeThong = new javax.swing.JMenu();
         mniDangXuat = new javax.swing.JMenuItem();
@@ -44,7 +143,6 @@ public class ManiJFrame extends javax.swing.JFrame {
         mniThongKe = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
         mniChiTiet = new javax.swing.JMenu();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
@@ -52,6 +150,35 @@ public class ManiJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo.jpg"))); // NOI18N
+
+        jPanel1.setBackground(new java.awt.Color(102, 0, 204));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Info.png"))); // NOI18N
+        jLabel2.setText("Hệ quản lý đào tạo");
+
+        lbldongHo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Alarm.png"))); // NOI18N
+        lbldongHo.setText("10:55 PM");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbldongHo)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lbldongHo))
+                .addContainerGap())
+        );
 
         mnuHeThong.setText("Hệ thống");
 
@@ -64,6 +191,11 @@ public class ManiJFrame extends javax.swing.JFrame {
         mnuHeThong.add(mniDangXuat);
 
         jMenuItem9.setText("Đăng nhập");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         mnuHeThong.add(jMenuItem9);
 
         mniThongTinUngDung.setText("Thông tin ứng dụng");
@@ -82,15 +214,35 @@ public class ManiJFrame extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem4.setText("Kho hàng");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem4);
 
         jMenuItem5.setText("Sản phẩm");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem5);
 
         jMenuItem7.setText("Ca làm việc");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem7);
 
         jMenuItem8.setText("Hóa đơn");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem8);
 
         mnu.add(jMenu1);
@@ -103,18 +255,20 @@ public class ManiJFrame extends javax.swing.JFrame {
         });
 
         jMenuItem10.setText("Danh thu");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         mniThongKe.add(jMenuItem10);
 
         jMenuItem11.setText("Kho hàng ");
-        mniThongKe.add(jMenuItem11);
-
-        jMenuItem12.setText("Nhân viên");
-        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem12ActionPerformed(evt);
+                jMenuItem11ActionPerformed(evt);
             }
         });
-        mniThongKe.add(jMenuItem12);
+        mniThongKe.add(jMenuItem11);
 
         mnu.add(mniThongKe);
 
@@ -140,14 +294,17 @@ public class ManiJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 3, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(28, 28, 28))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -159,7 +316,8 @@ public class ManiJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mniChiTietMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+       // TODO add your handling code here:
+       openNhanVien(); 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void mniThongKeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mniThongKeMouseClicked
@@ -169,12 +327,44 @@ public class ManiJFrame extends javax.swing.JFrame {
 
     private void mniDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDangXuatActionPerformed
         // TODO add your handling code here:
-  
+    ShareHelper.logoff();
+        this.openLogin();
     }//GEN-LAST:event_mniDangXuatActionPerformed
 
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
+        openKhoHang();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        openSanPham();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        openCaLamViec();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        openHoaDon();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        new DangNhapJDialog(this, true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        openThongKe();
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        // TODO add your handling code here:
+        openThongKe();
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,11 +404,11 @@ public class ManiJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem4;
@@ -226,6 +416,8 @@ public class ManiJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbldongHo;
     private javax.swing.JMenu mniChiTiet;
     private javax.swing.JMenuItem mniDangXuat;
     private javax.swing.JMenu mniThongKe;

@@ -4,6 +4,15 @@
  * and open the template in the editor.
  */
 package view;
+
+
+import DAO.SanPhamDAO;
+import helper.DialogHelper;
+import helper.ShareHelper;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.SanPham;
+
 /**
  *
  * @author Admin
@@ -12,10 +21,164 @@ public class SanPhamJFrame extends javax.swing.JFrame {
     /**
      * Creates new form SanPhamJFrame
      */
+      int index = 0;
+    SanPhamDAO dao = new SanPhamDAO();
     public SanPhamJFrame() {
-        initComponents();    
+        initComponents();   
+        init();
     }
 
+    SanPhamJFrame(ManiJFrame aThis, boolean rootPaneCheckingEnabled) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+ void init() {
+       
+        setIconImage(ShareHelper.APP_ICON);
+        setLocationRelativeTo(null);
+        this.load();
+        this.setStatus(true);
+        this.setTitle("Hệ thống quản lý quán coffee");
+        ShareHelper.setBoderForTable(jScrollPane2);
+
+    }
+
+  
+
+    void load() {
+        DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
+        model.setRowCount(0);
+        try {
+            List<SanPham> list = dao.select();
+            for (SanPham sp : list) {
+                Object[] row = {
+                    sp.getMaSanPham(),
+                    sp.getTenSanPham(),                 
+                    sp.getGiaBan(),
+                    sp.getGhiChu()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    void setModel(SanPham model) {
+        txtMaSanPham.setToolTipText(String.valueOf(model.getMaSanPham()));
+        txtTenSanPham.setText(model.getTenSanPham());
+        txtGiaBan.setText(String.valueOf(model.getGiaBan()));
+        txtGhiChu.setText(model.getGhiChu());
+
+    }
+
+    SanPham getModel() {
+        SanPham sanpham = new SanPham();
+        sanpham.setTenSanPham(txtTenSanPham.getText());
+        sanpham.setGiaBan(Float.valueOf(txtGiaBan.getText()));
+        sanpham.setGhiChu(txtGhiChu.getText());
+
+        if (txtTenSanPham.getToolTipText() != null) {
+            sanpham.setMaSanPham(Integer.valueOf(txtTenSanPham.getToolTipText()));
+        }
+        return sanpham;
+    }
+
+    void setStatus(boolean insertTable) {
+
+        btnThem.setEnabled(insertTable);
+        btnSua.setEnabled(!insertTable);
+        btnXoa.setEnabled(!insertTable);
+        boolean first = this.index > 0;
+        boolean last = this.index < tblSanPham.getRowCount() - 1;
+        btnFirst.setEnabled(!insertTable && first);
+        btnPrev.setEnabled(!insertTable && first);
+        btnNext.setEnabled(!insertTable && last);
+        btnLast.setEnabled(!insertTable && last);
+
+    }
+
+    void clear() {
+        SanPham model = new SanPham();
+        this.setModel(model);
+        this.setStatus(true);
+        txtGiaBan.setText("");
+    }
+
+    void insert() {
+        SanPham model = getModel();
+        try {
+            dao.insert(model);
+            this.load();
+            this.clear();
+            DialogHelper.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Thêm mới thất bại!");
+            e.printStackTrace();
+        }
+    }
+
+    void update() {
+        SanPham model = getModel();
+        try {
+            dao.update(model);
+            this.load();
+            this.clear();
+            DialogHelper.alert(this, "Cập nhập thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Cập nhập thất bại");
+        }
+    }
+
+    void delete() {
+        if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa sản phẩm này")) {
+            Integer masp = Integer.valueOf(txtTenSanPham.getToolTipText());
+            try {
+                dao.delete(masp);
+                this.load();
+                this.clear();
+                DialogHelper.alert(this, "Xóa thành công!");
+            } catch (Exception e) {
+                DialogHelper.alert(this, "Xóa thất bại");
+            }
+        }
+    }
+
+    void edit() {
+        try {
+            int masp = (int) tblSanPham.getValueAt(this.index, 0);
+            SanPham model = dao.findById(masp);
+            if (model != null) {
+                this.setModel(model);
+                this.setStatus(false);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu");
+        }
+    }
+
+    public boolean check() {
+        boolean check = true;
+        if (txtTenSanPham.getText().isEmpty()) {
+            DialogHelper.alert(this, "Tên sản phẩm không được để rỗng");
+            check = false;
+        }
+
+        if (txtGiaBan.getText().isEmpty()) {
+            DialogHelper.alert(this, "Giá bán không được để rỗng");
+            check = false;
+        } else {
+            try {
+                if (Float.parseFloat(txtGiaBan.getText()) <= 0) {
+                    DialogHelper.alert(this, "Giá bán phải lớn hơn 0");
+                    check = false;
+                }
+            } catch (Exception e) {
+                DialogHelper.alert(this, "Giá bán phải là số.");
+                check = false;
+            }
+        }
+        return check;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,7 +209,7 @@ public class SanPhamJFrame extends javax.swing.JFrame {
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
-        txtTenSanPham2 = new javax.swing.JTextField();
+        txtTenSanPham = new javax.swing.JTextField();
 
         lblIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Ie9liJ.jpg"))); // NOI18N
 
@@ -174,7 +337,7 @@ public class SanPhamJFrame extends javax.swing.JFrame {
                             .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtGiaBan, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtMaSanPham, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtTenSanPham2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtTenSanPham, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlWrapperLayout.createSequentialGroup()
                         .addComponent(btnThem)
                         .addGap(14, 14, 14)
@@ -185,11 +348,7 @@ public class SanPhamJFrame extends javax.swing.JFrame {
                         .addComponent(btnMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlWrapperLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(106, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlWrapperLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
                         .addComponent(btnFirst)
                         .addGap(18, 18, 18)
                         .addComponent(btnPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -197,7 +356,11 @@ public class SanPhamJFrame extends javax.swing.JFrame {
                         .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnLast)
-                        .addGap(210, 210, 210))))
+                        .addGap(210, 210, 210))
+                    .addGroup(pnlWrapperLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(pnlWrapperLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTieuDe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -216,7 +379,7 @@ public class SanPhamJFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblLoaiSanPham)
-                            .addComponent(txtTenSanPham2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblGiaBan)
@@ -264,53 +427,70 @@ public class SanPhamJFrame extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-       
+       if (check()) {
+            insert();
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-      
+       if (check()) {
+            update();
+        }
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-      
+      if (ShareHelper.getQuyenTruyCap()) {
+            delete();
+        } else {
+            DialogHelper.alert(this, "Bạn không đủ quyền để thực hiện chức năng này.");
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-     
+       clear();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSanPhamMouseClicked
         // TODO add your handling code here:
-      
-
+       if (evt.getClickCount() == 1) {
+            this.index = tblSanPham.rowAtPoint(evt.getPoint());
+            if (this.index >= 0) {
+                this.edit();
+            }
+        }
     }//GEN-LAST:event_tblSanPhamMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-
+ this.load();
+        this.setStatus(true);
     }//GEN-LAST:event_formWindowOpened
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-     
+     this.index--;
+        this.edit();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-        
+        this.index = 0;
+        this.edit();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-     
+      this.index = tblSanPham.getRowCount() - 1;
+        this.edit();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-        
+        this.index++;
+        this.edit();
     }//GEN-LAST:event_btnLastActionPerformed
 
     /**
@@ -370,6 +550,6 @@ public class SanPhamJFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea txtGhiChu;
     private javax.swing.JTextField txtGiaBan;
     private javax.swing.JTextField txtMaSanPham;
-    private javax.swing.JTextField txtTenSanPham2;
+    private javax.swing.JTextField txtTenSanPham;
     // End of variables declaration//GEN-END:variables
 }

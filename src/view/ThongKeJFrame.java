@@ -4,17 +4,88 @@
  * and open the template in the editor.
  */
 package view;
+import DAO.SanPhamDAO;
+import DAO.ThongKeDAO;
+import helper.ShareHelper;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author NgọcHải
  */
 public class ThongKeJFrame extends javax.swing.JFrame {
+    ThongKeDAO dao = new ThongKeDAO();
+    SanPhamDAO spDAO = new SanPhamDAO();
+
     /**
      * Creates new form ThongKeJFrame
      */
     public ThongKeJFrame() {
         initComponents();     
     }
+
+    ThongKeJFrame(ManiJFrame aThis, boolean rootPaneCheckingEnabled) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    void init() {
+        setIconImage(ShareHelper.APP_ICON);
+        setLocationRelativeTo(null);
+        fillComboBoxThoiGian();
+        fillTableDoanhThu();
+        fillTableKhoHang();
+        ShareHelper.setBoderForTable(jScrollPane1);
+        ShareHelper.setBoderForTable(jScrollPane4);
+    }
+
+    void fillTableKhoHang() {
+        DefaultTableModel model = (DefaultTableModel) tblThongKeKhoHang.getModel();
+        model.setRowCount(0);
+        try {
+            List<Object[]> list = dao.getKhoHang();
+            for (Object[] objects : list) {
+                objects[0] = spDAO.findById((int) objects[0]).getTenSanPham();
+                model.addRow(objects);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    void fillComboBoxThoiGian() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboThoiGian.getModel();
+        model.removeAllElements();
+        try {
+            List<String> list = new ArrayList<>();
+            list.add("Năm");
+            list.add("Ngày");
+            for (String thoiGian : list) {
+                model.addElement(thoiGian);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    void fillTableDoanhThu() {
+        DefaultTableModel model = (DefaultTableModel) tblThongKeTheoThang.getModel();
+        model.setRowCount(0);
+        try {
+            if (cboThoiGian.getSelectedItem().equals("Năm")) {
+                List<Object[]> list = dao.getDoanhThuNam();
+                for (Object[] objects : list) {
+                    model.addRow(objects);
+                }
+            } else {
+                List<Object[]> list = dao.getDoanhThuThang();
+                for (Object[] objects : list) {
+                    model.addRow(objects);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,8 +106,6 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         tblThongKeTheoThang = new javax.swing.JTable();
         cboThoiGian = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tổng hợp thông kê");
@@ -133,44 +202,25 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
         tabs.addTab("Thống kê doanh thu", pnlThongKeDoanhThu);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Mã nhân viên", "Số ngày làm việc", "Lương", "Hoa hồng"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+            .addGap(0, 806, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+            .addGap(0, 275, Short.MAX_VALUE)
         );
 
-        tabs.addTab("Thống kê nhân viên", jPanel1);
+        tabs.addTab("", jPanel1);
 
         javax.swing.GroupLayout pnlWallpaperLayout = new javax.swing.GroupLayout(pnlWallpaper);
         pnlWallpaper.setLayout(pnlWallpaperLayout);
         pnlWallpaperLayout.setHorizontalGroup(
             pnlWallpaperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         pnlWallpaperLayout.setVerticalGroup(
             pnlWallpaperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,6 +250,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
     private void cboThoiGianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboThoiGianActionPerformed
         // TODO add your handling code here:
+          fillTableDoanhThu();
     }//GEN-LAST:event_cboThoiGianActionPerformed
 
     /**
@@ -241,9 +292,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboThoiGian;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel pnlThongKeDoanhThu;
     private javax.swing.JPanel pnlThongKeKhoHang;

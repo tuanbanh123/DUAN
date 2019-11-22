@@ -76,8 +76,7 @@ public class HoaDonDAO {
 //                    
                     HoaDonChiTiet hdct = new HoaDonChiTiet(rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11));
                     hoaDon.setHoaDonChiTiet(hdct);
-
-                    SanPham sanPham = new SanPham(rs.getInt(12), rs.getString(13), rs.getInt(14), rs.getFloat(15), rs.getBoolean(16), rs.getString(17));
+                    SanPham sanPham = new SanPham(rs.getInt(12), rs.getString(13), rs.getFloat(14), rs.getBoolean(15), rs.getString(16));
                     hoaDon.setSanPham(sanPham);
                     list.add(hoaDon);
                 }

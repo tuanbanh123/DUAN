@@ -4,6 +4,20 @@
  * and open the template in the editor.
  */
 package view;
+
+import DAO.CaLamViecDAO;
+import DAO.NhanVienDAO;
+import helper.DialogHelper;
+import helper.ShareHelper;
+import helper.XDate;
+import java.util.Date;
+import java.util.List;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+import model.CaLamViec;
+import model.NhanVien;
+
 /**
  *
  * @author duann
@@ -12,10 +26,245 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     /**
      * Creates new form NhanVienJFrame
      */
-   
+    NhanVienDAO dao = new NhanVienDAO();
+    ButtonGroup grGioiTinh;
+    ButtonGroup grVaiTro;
+    CaLamViecDAO clvdao = new CaLamViecDAO();
+    int index = 0;
     public NhanVienJFrame() {
         initComponents();
+        init();
     }
+
+    NhanVienJFrame(ManiJFrame aThis, boolean rootPaneCheckingEnabled) {
+       initComponents();
+        init();
+    }
+    void init() {
+        this.setLocationRelativeTo(null);
+        setIconImage(ShareHelper.APP_ICON);
+        grGioiTinh = new ButtonGroup();
+        grGioiTinh.add(rdoNam);
+        grGioiTinh.add(rdoNu);
+        grVaiTro = new ButtonGroup();
+        grVaiTro.add(rdoQuanLy);
+        grVaiTro.add(rdoNhanVien);
+        fillComboboxCaLV();
+        this.load();
+        this.clear();
+    }
+
+    void load() {
+        DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
+        model.setRowCount(0);
+        try {
+            List<NhanVien> list = dao.select();
+            for (NhanVien nhanVien : list) {
+                Object[] row = {
+                    nhanVien.getMaNhanVien(),
+                    nhanVien.getHoTen(),
+                    XDate.toString(nhanVien.getNgaySinh()),
+                    nhanVien.getDienThoai(),
+                    nhanVien.isGioiTinh() ? "Nữ" : "Nam",
+                    nhanVien.getEmail(),
+                    nhanVien.getMatKhau(),
+                    nhanVien.isVaiTro() ? "Nhân viên" : "Quản lý",
+                    nhanVien.getGhiChu(),
+                    nhanVien.getCaLamViec().getTenCaLamViec()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    void fillComboboxCaLV() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboCaLamViec.getModel();
+        model.removeAllElements();
+        try {
+            List<CaLamViec> list = clvdao.select();
+            for (CaLamViec caLamViec : list) {
+                model.addElement(caLamViec.getTenCaLamViec());
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    NhanVien getModel() {
+        NhanVien nhanVien = new NhanVien();
+        try {
+            nhanVien.setMaNhanVien(Integer.parseInt(txtHoTen.getToolTipText()));
+        } catch (Exception e) {
+        }
+        nhanVien.setHoTen(txtHoTen.getText());
+        nhanVien.setMatKhau(txtMatKhau.getText());
+        nhanVien.setGioiTinh(rdoNu.isSelected());
+        nhanVien.setVaiTro(rdoNhanVien.isSelected());
+        nhanVien.setNgaySinh(XDate.toDate(txtNgaySinh.getText()));
+        nhanVien.setEmail(txtEmail.getText());
+        nhanVien.setDienThoai(txtDienThoai.getText());
+        nhanVien.setGhiChu(txtGhiChu.getText());
+        nhanVien.setMaCaLamViec(clvdao.findByName((String) cboCaLamViec.getSelectedItem()).getMaCaLamViec());
+        nhanVien.setSoNgayLamViec(0);
+        return nhanVien;
+    }
+
+    void setModel(NhanVien model) {
+        try {
+            cboCaLamViec.setSelectedItem(model.getCaLamViec().getTenCaLamViec());
+        } catch (Exception e) {
+            cboCaLamViec.setSelectedIndex(0);
+        }
+        txtHoTen.setToolTipText(String.valueOf(model.getMaNhanVien()));
+        txtHoTen.setText(model.getHoTen());
+        txtNgaySinh.setText(XDate.toString(model.getNgaySinh()));
+        txtDienThoai.setText(model.getDienThoai());
+
+        rdoNam.setSelected(!model.isGioiTinh());
+        rdoNu.setSelected(model.isGioiTinh());
+
+        txtEmail.setText(model.getEmail());
+        txtMatKhau.setText(model.getMatKhau());
+        txtMatKhauXacNhan.setText(model.getMatKhau());
+
+        rdoNhanVien.setSelected(model.isVaiTro());
+        rdoQuanLy.setSelected(!model.isVaiTro());
+
+        txtGhiChu.setText(model.getGhiChu());
+    }
+
+    void setStatus(boolean insertTable) {
+        try {
+            btnThem.setEnabled(insertTable);
+            btnSua.setEnabled(!insertTable);
+            btnXoa.setEnabled(!insertTable);
+
+            boolean first = this.index > 0;
+            boolean last = this.index < tblNhanVien.getRowCount() - 1;
+            btnFirst.setEnabled(!insertTable && first);
+            btnPrev.setEnabled(!insertTable && first);
+            btnNext.setEnabled(!insertTable && last);
+            btnLast.setEnabled(!insertTable && last);
+        } catch (Exception e) {
+        }
+    }
+
+    void fillToForm() {
+        try {
+            Integer maNhanVien = (Integer) tblNhanVien.getValueAt(this.index, 0);
+            NhanVien model = dao.findById(maNhanVien);
+            if (model != null) {
+                this.setModel(model);
+                this.setStatus(false);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    void clear() {
+        NhanVien model = new NhanVien();
+        this.setModel(model);
+        setStatus(true);
+        rdoNam.setSelected(true);
+        rdoNhanVien.setSelected(true);
+        cboCaLamViec.setSelectedIndex(0);
+        txtNgaySinh.setText("");
+    }
+
+    private void insert() {
+        NhanVien model = getModel();
+        try {
+            dao.insert(model);
+            this.load();
+            this.clear();
+            DialogHelper.setInfinity(lblMsg, "Thêm mới thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Thêm mới thất bại!");
+        }
+    }
+
+    void update() {
+        NhanVien model = getModel();
+        try {
+            dao.update(model);
+            this.load();
+            DialogHelper.setInfinity(lblMsg, "Cập nhật thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Cập nhật thất bại!");
+            System.out.println("error: " + e.toString());
+        }
+    }
+
+    void delete() {
+        if (DialogHelper.confirm(this, "Bạn có thực sự muốn xóa nhân viên này?")) {
+            Integer maNhanVien = Integer.valueOf(txtHoTen.getToolTipText());
+            try {
+                dao.delete(maNhanVien);
+                this.load();
+                this.clear();
+                DialogHelper.setInfinity(lblMsg, "Xóa thành công!");
+            } catch (Exception e) {
+                DialogHelper.alert(this, "Xóa thất bại!");
+                System.out.println(e.toString());
+            }
+        }
+    }
+
+    private boolean check() {
+        boolean check = true;
+
+        if (txtHoTen.getText().isEmpty()) {
+            DialogHelper.alert(this, "Tên nhân viên không được để trống!");
+            check = false;
+        }
+
+        if (txtNgaySinh.getText().isEmpty()) {
+            DialogHelper.alert(this, "Ngày sinh không được để trống!");
+            check = false;
+        } else {
+            Date ngaysinh = null;
+            try {
+                ngaysinh = XDate.toDate(txtNgaySinh.getText());
+            } catch (RuntimeException ex) {
+                DialogHelper.alert(this, "Nhập sai định dạng ngày!");
+                check = false;
+            }
+        }
+
+        if (txtDienThoai.getText().length() == 10 || txtDienThoai.getText().length() == 11) {
+            try {
+                Integer.parseInt(txtDienThoai.getText());
+            } catch (Exception e) {
+                DialogHelper.alert(this, "Số điện thoại phải là số.");
+                check = false;
+            }
+        } else {
+            DialogHelper.alert(this, "Số điện thoại 10 hoặc 11 số.");
+            check = false;
+        }
+
+        if (txtEmail.getText().isEmpty()) {
+            DialogHelper.alert(this, "Email không được để trống!");
+            check = false;
+        } else if (!txtEmail.getText().contains("@")) {
+            DialogHelper.alert(this, "Email không đúng định dạng email!");
+            check = false;
+        }
+
+        if (txtMatKhau.getPassword().length < 3) {
+            DialogHelper.alert(this, "Mật khẩu ít nhất 3 ký tự!");
+            check = false;
+        }
+
+        if (!txtMatKhau.getText().equals(txtMatKhauXacNhan.getText())) {
+            DialogHelper.alert(this, "Xác nhận mật khẩu không đúng");
+            check = false;
+        }
+
+        return check;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -409,6 +658,13 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
         // TODO add your handling code here:
        
+        if (evt.getClickCount() == 2) {
+            this.index = tblNhanVien.rowAtPoint(evt.getPoint());
+            if (this.index >= 0) {
+                tabs.setSelectedIndex(0);
+                this.fillToForm();
+            }
+        }
 
     }//GEN-LAST:event_tblNhanVienMouseClicked
 
@@ -419,42 +675,50 @@ public class NhanVienJFrame extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-       
+       if (check()) {
+            insert();
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
-       
+       this.clear();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-       
+        if (check()) {
+            update();
+        }
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-      
+       this.delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-       
+        this.index = 0;
+        this.fillToForm();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-        
+         this.index--;
+        this.fillToForm();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-       
+        this.index++;
+        this.fillToForm();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-        
+         this.index = tblNhanVien.getRowCount() - 1;
+        this.fillToForm();
     }//GEN-LAST:event_btnLastActionPerformed
 
     /**
@@ -534,5 +798,9 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtMatKhauXacNhan;
     private javax.swing.JTextField txtNgaySinh;
     // End of variables declaration//GEN-END:variables
+
+    private void fillCombobox() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

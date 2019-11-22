@@ -19,10 +19,9 @@ import model.SanPham;
 public class SanPhamDAO {
 
     public void insert(SanPham model) {
-        String sql = "INSERT INTO SanPham (TenSanPham, MaLoaiSP, GiaBan, TrangThai, GhiChu) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO SanPham (TenSanPham,  GiaBan, TrangThai, GhiChu) VALUES (?,?,?,?)";
         Jdbc.executeUpdate(sql,
-                model.getTenSanPham(),
-                model.getMaLoaiSP(),
+                model.getTenSanPham(),               
                 model.getGiaBan(),
                 model.getTrangThai(),
                 model.getGhiChu());
@@ -30,10 +29,10 @@ public class SanPhamDAO {
     }
 
     public void update(SanPham model) {
-        String sql = "UPDATE SanPham SET TenSanPham=?, MaLoaiSP=?, GiaBan=?, GhiChu=? WHERE MaSanPham=?";
+        String sql = "UPDATE SanPham SET TenSanPham=?,  GiaBan=?, GhiChu=? WHERE MaSanPham=?";
         Jdbc.executeUpdate(sql,
                 model.getTenSanPham(),
-                model.getMaLoaiSP(),
+                
                 model.getGiaBan(),
                 model.getGhiChu(),
                 model.getMaSanPham());
@@ -49,10 +48,10 @@ public class SanPhamDAO {
         SanPham sanpham = new SanPham();
         sanpham.setMaSanPham(rs.getInt(1));
         sanpham.setTenSanPham(rs.getString(2));
-        sanpham.setMaLoaiSP(rs.getInt(3));
-        sanpham.setGiaBan(rs.getFloat(4));
-        sanpham.setTrangThai(rs.getBoolean(5));
-        sanpham.setGhiChu(rs.getString(6));
+       
+        sanpham.setGiaBan(rs.getFloat(3));
+        sanpham.setTrangThai(rs.getBoolean(4));
+        sanpham.setGhiChu(rs.getString(5));
         return sanpham;
     }
 

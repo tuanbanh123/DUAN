@@ -5,6 +5,15 @@
  */
 package view;
 
+import DAO.CaLamViecDAO;
+import helper.DialogHelper;
+import helper.ShareHelper;
+import java.text.ParseException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import model.CaLamViec;
 
 /**
  *
@@ -12,16 +21,153 @@ package view;
  */
 public class CaLamViecJFrame extends javax.swing.JFrame {
 
+    int index = 0;
+    CaLamViecDAO dao = new CaLamViecDAO();
 
     /**
      * Creates new form CaLamViecJFrame
      */
     public CaLamViecJFrame() {
         initComponents();
-       
+        init();
     }
 
-   
+    CaLamViecJFrame(ManiJFrame aThis, boolean rootPaneCheckingEnabled) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void init() {
+        setIconImage(ShareHelper.APP_ICON);
+        this.setLocationRelativeTo(null);
+        this.load();
+        this.setStatus(true);
+        this.setTitle("Hệ thống quản lý quán coffee");
+        ShareHelper.setBoderForTable(jScrollPane2);
+    }
+
+    void load() {
+        DefaultTableModel model = (DefaultTableModel) tblCaLamViec.getModel();
+        model.setRowCount(0);
+        try {
+            List<CaLamViec> list = dao.select();
+            for (CaLamViec clv : list) {
+                Object[] row = {
+                    clv.getMaCaLamViec(),
+                    clv.getTenCaLamViec(),
+                    clv.getBatDau(),
+                    clv.getKetThuc(),
+                    clv.getGhiChu()};
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    void setModel(CaLamViec model) throws ParseException {
+        txtTenCaLV.setToolTipText(String.valueOf(model.getMaCaLamViec()));
+        txtTenCaLV.setText(model.getTenCaLamViec());
+        txtBatDau.setText(model.getBatDau());
+        txtKetThuc.setText(model.getKetThuc());
+        txtGhiChu.setText(model.getGhiChu());
+    }
+
+    CaLamViec getModel() {
+        CaLamViec model = new CaLamViec();
+        model.setTenCaLamViec(txtTenCaLV.getText());
+        model.setBatDau((String) txtBatDau.getText());
+        model.setKetThuc((String) txtKetThuc.getText());
+        model.setGhiChu((String) txtGhiChu.getText());
+        if (txtTenCaLV.getToolTipText() != null) {
+            model.setMaCaLamViec(Integer.parseInt(txtTenCaLV.getToolTipText()));
+        }
+        return model;
+    }
+
+    void setStatus(boolean insertable) {
+        btnThem.setEnabled(insertable);
+        btnSua.setEnabled(!insertable);
+        btnXoa.setEnabled(!insertable);
+
+        boolean first = this.index > 0;
+        boolean last = this.index < tblCaLamViec.getRowCount() - 1;
+        btnFirst.setEnabled(!insertable && first);
+        btnPrev.setEnabled(!insertable && first);
+        btnNext.setEnabled(!insertable && last);
+        btnLast.setEnabled(!insertable && last);
+    }
+
+    void clear() throws ParseException {
+        CaLamViec model = new CaLamViec();
+        this.setModel(model);
+        this.setStatus(true);
+    }
+
+    void insert() {
+        CaLamViec model = getModel();
+        try {
+            dao.insert(model);
+            this.load();
+            DialogHelper.setInfinity(lblThongBao, "Thêm mới thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Thêm mới thất bại!");
+        }
+    }
+
+    void update() {
+        CaLamViec model = getModel();
+        try {
+            dao.update(model);
+            this.load();
+            DialogHelper.setInfinity(lblThongBao, "Cập nhật thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete(Integer maCaLamViec) {
+        if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa khu vực này?")) {
+            try {
+                dao.delete(maCaLamViec);
+                this.load();
+                this.clear();
+                DialogHelper.setInfinity(lblThongBao, "Xóa thành công!");
+            } catch (Exception e) {
+                DialogHelper.alert(this, "Không thể xóa được vì dữ liệu đã được liên kết!");
+            }
+        }
+    }
+
+    void edit() {
+        try {
+            int maCa = (int) tblCaLamViec.getValueAt(this.index, 0);
+            CaLamViec model = dao.findById(maCa);
+            if (model != null) {
+                this.setModel(model);
+                this.setStatus(false);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    public boolean check() {
+        boolean check = true;
+        if (txtTenCaLV.getText().isEmpty()) {
+            DialogHelper.alert(this, "Tên ca làm việc không được để trống!");
+            return false;
+        }
+        if (txtBatDau.getText().isEmpty()) {
+            DialogHelper.alert(this, "Thời gian bắt đầu không được để trống!");
+            check = false;
+        }
+        if (txtKetThuc.getText().isEmpty()) {
+            DialogHelper.alert(this, "Thời gian kết thúc không được để trống!");
+            check = false;
+        }
+        return check;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -283,55 +429,76 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-       
-        
-
+        if (check()) {
+            insert();
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tblCaLamViecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCaLamViecMouseClicked
         // TODO add your handling code here:
-       
+        if (evt.getClickCount() == 1) {
+            this.index = tblCaLamViec.rowAtPoint(evt.getPoint());
+            if (this.index >= 0) {
+                this.edit();
+            }
+        }
     }//GEN-LAST:event_tblCaLamViecMouseClicked
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
         // TODO add your handling code here:
-       
+        this.index = 0;
+        this.edit();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
         // TODO add your handling code here:
-        
+        this.index--;
+        this.edit();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
-        
+        this.index++;
+        this.edit();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
-       
+        this.index = tblCaLamViec.getRowCount() - 1;
+        this.edit();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
 
-
+        this.load();
+        this.setStatus(true);
     }//GEN-LAST:event_formWindowOpened
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-       
+        if (check()) {
+            update();
+        }
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-        
+        if (ShareHelper.getQuyenTruyCap()) {
+            delete(Integer.parseInt(txtTenCaLV.getToolTipText()));
+            this.load();
+        } else {
+            DialogHelper.alert(this, "Bạn không đủ quyền để thực hiện chức năng này.");
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         // TODO add your handling code here:
- 
+        try {
+            clear();
+        } catch (ParseException ex) {
+            Logger.getLogger(CaLamViecJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnMoiActionPerformed
 
     /**

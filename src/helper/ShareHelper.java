@@ -67,4 +67,8 @@ public class ShareHelper {
         return false;
     }
 
+    public static void logoff() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
