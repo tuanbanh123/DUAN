@@ -133,13 +133,13 @@ public class ManiJFrame extends javax.swing.JFrame {
         mnuHeThong = new javax.swing.JMenu();
         mniDangXuat = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         mniThongTinUngDung = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
         mniThongKe = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
@@ -198,6 +198,14 @@ public class ManiJFrame extends javax.swing.JFrame {
         });
         mnuHeThong.add(jMenuItem9);
 
+        jMenuItem2.setText("Kết Thúc");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        mnuHeThong.add(jMenuItem2);
+
         mniThongTinUngDung.setText("Thông tin ứng dụng");
         mnuHeThong.add(mniThongTinUngDung);
 
@@ -236,14 +244,6 @@ public class ManiJFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem7);
-
-        jMenuItem8.setText("Hóa đơn");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem8);
 
         mnu.add(jMenu1);
 
@@ -346,11 +346,6 @@ public class ManiJFrame extends javax.swing.JFrame {
         openCaLamViec();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
-        openHoaDon();
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
         new DangNhapJDialog(this, true).setVisible(true);
@@ -365,6 +360,10 @@ public class ManiJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         openThongKe();
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+           exit();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -411,10 +410,10 @@ public class ManiJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbldongHo;

@@ -29,7 +29,8 @@ public class SanPhamJFrame extends javax.swing.JFrame {
     }
 
     SanPhamJFrame(ManiJFrame aThis, boolean rootPaneCheckingEnabled) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        initComponents();   
+        init();
     }
  void init() {
        
