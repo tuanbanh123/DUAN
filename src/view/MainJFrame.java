@@ -326,6 +326,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         mnu.add(mniBan);
 
+        mniKhuVuc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Numbered list.png"))); // NOI18N
         mniKhuVuc.setText("Khu vực");
         mniKhuVuc.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

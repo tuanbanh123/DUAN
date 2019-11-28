@@ -49,6 +49,7 @@ void init(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         jLabel1 = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
 
@@ -119,6 +120,7 @@ void init(){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 }

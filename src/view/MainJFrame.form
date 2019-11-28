@@ -43,6 +43,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="mniKhuVuc">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/Numbered list.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Khu v&#x1ef1;c"/>
           </Properties>
           <Events>
