@@ -16,11 +16,11 @@ import model.NhanVien;
  */
 public class DangNhapJDialog extends javax.swing.JDialog {
 
-    NhanVienDAO dao = new NhanVienDAO();
-
     /**
      * Creates new form DangNhapJDialog
      */
+    NhanVienDAO dao = new NhanVienDAO();
+
     public DangNhapJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -205,8 +205,6 @@ public class DangNhapJDialog extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(DangNhapJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

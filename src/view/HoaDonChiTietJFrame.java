@@ -19,19 +19,20 @@ import model.HoaDon;
  * @author duann
  */
 public class HoaDonChiTietJFrame extends javax.swing.JFrame {
- static HoaDonDAO dao = new HoaDonDAO();
-    static HoaDonChiTietDAO daoCT = new HoaDonChiTietDAO();
-    static NhanVienDAO nvdao = new NhanVienDAO();
 
     /**
      * Creates new form HoaDonChiTietJFrame
      */
+    static HoaDonDAO dao = new HoaDonDAO();
+    static HoaDonChiTietDAO daoCT = new HoaDonChiTietDAO();
+    static NhanVienDAO nvdao = new NhanVienDAO();
 
     public HoaDonChiTietJFrame() {
         initComponents();
         init();
     }
- void init() {
+
+    void init() {
         this.setLocationRelativeTo(null);
         load();
         setIconImage(ShareHelper.APP_ICON);
@@ -45,7 +46,8 @@ public class HoaDonChiTietJFrame extends javax.swing.JFrame {
         try {
             List<HoaDon> list = dao.getAll();
             for (HoaDon hoaDon : list) {
-                Object[] row = {                
+                Object[] row = {
+                    hoaDon.getMaBan(),
                     hoaDon.getMaHoaDon(),
                     hoaDon.getSanPham().getTenSanPham(),
                     hoaDon.getHoaDonChiTiet().getSoLuongSP(),
@@ -82,11 +84,11 @@ public class HoaDonChiTietJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Hóa đơn", "Sản phẩm", "Số lượng mua", "Đơn giá", "Trạng thái", "Nhân viên", "Ngày thanh toán"
+                "Bàn", "Hóa đơn", "Sản phẩm", "Số lượng mua", "Đơn giá", "Trạng thái", "Nhân viên", "Ngày thanh toán"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

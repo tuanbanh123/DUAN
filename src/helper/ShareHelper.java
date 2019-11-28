@@ -67,8 +67,4 @@ public class ShareHelper {
         return false;
     }
 
-    public static void logoff() {
-        ShareHelper.USER = null;
-    }
-
 }

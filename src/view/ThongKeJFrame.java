@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package view;
+
 import DAO.SanPhamDAO;
 import DAO.ThongKeDAO;
 import helper.ShareHelper;
@@ -11,24 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author NgọcHải
  */
 public class ThongKeJFrame extends javax.swing.JFrame {
-    ThongKeDAO dao = new ThongKeDAO();
-    SanPhamDAO spDAO = new SanPhamDAO();
 
     /**
      * Creates new form ThongKeJFrame
      */
+    ThongKeDAO dao = new ThongKeDAO();
+    SanPhamDAO spDAO = new SanPhamDAO();
+
     public ThongKeJFrame() {
-        initComponents();     
+        initComponents();
+        init();
     }
 
-    ThongKeJFrame(ManiJFrame aThis, boolean rootPaneCheckingEnabled) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     void init() {
         setIconImage(ShareHelper.APP_ICON);
         setLocationRelativeTo(null);
@@ -82,7 +83,6 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -105,7 +105,6 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         tblThongKeTheoThang = new javax.swing.JTable();
         cboThoiGian = new javax.swing.JComboBox<>();
-        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tổng hợp thông kê");
@@ -120,11 +119,11 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tên sản phẩm", "Số lượng tồn kho", "Số lượng đã bán"
+                "Tên sản phẩm", "Số lượng đã bán"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -202,25 +201,12 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
         tabs.addTab("Thống kê doanh thu", pnlThongKeDoanhThu);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 806, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 275, Short.MAX_VALUE)
-        );
-
-        tabs.addTab("", jPanel1);
-
         javax.swing.GroupLayout pnlWallpaperLayout = new javax.swing.GroupLayout(pnlWallpaper);
         pnlWallpaper.setLayout(pnlWallpaperLayout);
         pnlWallpaperLayout.setHorizontalGroup(
             pnlWallpaperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         pnlWallpaperLayout.setVerticalGroup(
             pnlWallpaperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,7 +236,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
     private void cboThoiGianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboThoiGianActionPerformed
         // TODO add your handling code here:
-          fillTableDoanhThu();
+        fillTableDoanhThu();
     }//GEN-LAST:event_cboThoiGianActionPerformed
 
     /**
@@ -290,7 +276,6 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboThoiGian;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblTitle;

@@ -32,11 +32,6 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
         init();
     }
 
-    CaLamViecJFrame(ManiJFrame aThis, boolean rootPaneCheckingEnabled) {
-         initComponents();
-        init();
-    }
-
     void init() {
         setIconImage(ShareHelper.APP_ICON);
         this.setLocationRelativeTo(null);
@@ -179,7 +174,6 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblIcon = new javax.swing.JLabel();
         pnlWrapper = new javax.swing.JPanel();
         lblTieuDe = new javax.swing.JLabel();
         lblBatDau = new javax.swing.JLabel();
@@ -202,8 +196,7 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
         lblThongBao = new javax.swing.JLabel();
         txtBatDau = new javax.swing.JTextField();
         txtKetThuc = new javax.swing.JTextField();
-
-        lblIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/red-grey-wallpapers-25292-6318392.jpg"))); // NOI18N
+        lblIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Quản lý ca làm việc");
@@ -214,17 +207,26 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
             }
         });
 
-        lblTieuDe.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblTieuDe.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblTieuDe.setForeground(new java.awt.Color(255, 255, 255));
         lblTieuDe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTieuDe.setText("Quản Lý Ca Làm việc");
+        lblTieuDe.setText("QUẢN LÝ CA LÀM VIỆC");
 
-        lblBatDau.setText("Thời gian bắt đầu:");
+        lblBatDau.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lblBatDau.setForeground(new java.awt.Color(255, 255, 255));
+        lblBatDau.setText("Thời gian bắt đầu");
 
-        lblKetThuc.setText("Thời gian kết thúc:");
+        lblKetThuc.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lblKetThuc.setForeground(new java.awt.Color(255, 255, 255));
+        lblKetThuc.setText("Thời gian kết thúc");
 
-        lblTenCa.setText("Tên ca làm việc:");
+        lblTenCa.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lblTenCa.setForeground(new java.awt.Color(255, 255, 255));
+        lblTenCa.setText("Tên ca làm việc");
 
-        lblGhiChu.setText("Ghi Chú:");
+        lblGhiChu.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lblGhiChu.setForeground(new java.awt.Color(255, 255, 255));
+        lblGhiChu.setText("Ghi Chú");
 
         txtGhiChu.setColumns(20);
         txtGhiChu.setRows(5);
@@ -311,61 +313,64 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
             }
         });
 
+        lblIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/red-grey-wallpapers-25292-6318392.jpg"))); // NOI18N
+
         javax.swing.GroupLayout pnlWrapperLayout = new javax.swing.GroupLayout(pnlWrapper);
         pnlWrapper.setLayout(pnlWrapperLayout);
         pnlWrapperLayout.setHorizontalGroup(
             pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlWrapperLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlWrapperLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
                 .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlWrapperLayout.createSequentialGroup()
+                        .addComponent(btnThem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlWrapperLayout.createSequentialGroup()
                         .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlWrapperLayout.createSequentialGroup()
-                                .addComponent(btnThem)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnlWrapperLayout.createSequentialGroup()
                                 .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlWrapperLayout.createSequentialGroup()
-                                        .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblBatDau)
-                                            .addComponent(lblTenCa))
-                                        .addGap(28, 28, 28)
-                                        .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtTenCaLV, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                            .addComponent(txtBatDau)))
-                                    .addGroup(pnlWrapperLayout.createSequentialGroup()
-                                        .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblKetThuc)
-                                            .addComponent(lblGhiChu))
-                                        .addGap(26, 26, 26)
-                                        .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jScrollPane1)
-                                            .addComponent(txtKetThuc))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)))
-                        .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblBatDau)
+                                    .addComponent(lblTenCa))
+                                .addGap(28, 28, 28)
+                                .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtTenCaLV, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                    .addComponent(txtBatDau)))
                             .addGroup(pnlWrapperLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlWrapperLayout.createSequentialGroup()
-                                .addGap(145, 145, 145)
-                                .addComponent(btnFirst)
-                                .addGap(20, 20, 20)
-                                .addComponent(btnPrev)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnNext)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnLast)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(48, 48, 48))
-                    .addComponent(lblTieuDe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblKetThuc)
+                                    .addComponent(lblGhiChu))
+                                .addGap(26, 26, 26)
+                                .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane1)
+                                    .addComponent(txtKetThuc))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
+                .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlWrapperLayout.createSequentialGroup()
-                        .addComponent(lblThongBao)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlWrapperLayout.createSequentialGroup()
+                        .addGap(145, 145, 145)
+                        .addComponent(btnFirst)
+                        .addGap(20, 20, 20)
+                        .addComponent(btnPrev)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNext)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLast)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(48, 48, 48))
+            .addComponent(lblTieuDe, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlWrapperLayout.createSequentialGroup()
+                .addGap(385, 385, 385)
+                .addComponent(lblThongBao)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 921, Short.MAX_VALUE))
         );
         pnlWrapperLayout.setVerticalGroup(
             pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,13 +406,15 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
                 .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblGhiChu)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
                     .addComponent(btnSua)
                     .addComponent(btnXoa)
                     .addComponent(btnMoi))
                 .addGap(35, 35, 35))
+            .addGroup(pnlWrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(lblIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 444, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -433,6 +440,7 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
         if (check()) {
             insert();
         }
+
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tblCaLamViecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCaLamViecMouseClicked
@@ -472,8 +480,7 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
 
-        this.load();
-        this.setStatus(true);
+
     }//GEN-LAST:event_formWindowOpened
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -494,8 +501,8 @@ public class CaLamViecJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
-        // TODO add your handling code here:
         try {
+
             clear();
         } catch (ParseException ex) {
             Logger.getLogger(CaLamViecJFrame.class.getName()).log(Level.SEVERE, null, ex);

@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
+          <Component id="jLabel1" alignment="0" pref="946" max="32767" attributes="0"/>
           <Component id="progressBar" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
@@ -42,7 +42,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/images/logo.jpg"/>
+          <Image iconType="3" name="/images/c2145ba06862c3e19669ed71bcf14ae4.png"/>
         </Property>
       </Properties>
     </Component>
